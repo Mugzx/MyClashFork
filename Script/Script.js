@@ -135,40 +135,12 @@ const baseRuleProviders = {
     path: './ruleset/apple@cn.mrs',
     'path-in-bundle': 'geo/geosite/apple@cn.mrs',
   },
-  github: {
+  'geolocation-!cn': {
     ...ruleProviderCommonDomain,
     ...ruleProviderFormatMrs,
-    url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/github.mrs',
-    path: './ruleset/github.mrs',
-    'path-in-bundle': 'geo/geosite/github.mrs',
-  },
-  youtube: {
-    ...ruleProviderCommonDomain,
-    ...ruleProviderFormatMrs,
-    url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/youtube.mrs',
-    path: './ruleset/youtube.mrs',
-    'path-in-bundle': 'geo/geosite/youtube.mrs',
-  },
-  google: {
-    ...ruleProviderCommonDomain,
-    ...ruleProviderFormatMrs,
-    url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/google.mrs',
-    path: './ruleset/google.mrs',
-    'path-in-bundle': 'geo/geosite/google.mrs',
-  },
-  google_ip: {
-    ...ruleProviderCommonIpcidr,
-    ...ruleProviderFormatMrs,
-    url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/google.mrs',
-    path: './ruleset/google_ip.mrs',
-    'path-in-bundle': 'geo/geoip/google.mrs',
-  },
-  gfw: {
-    ...ruleProviderCommonDomain,
-    ...ruleProviderFormatMrs,
-    url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/gfw.mrs',
-    path: './ruleset/gfw.mrs',
-    'path-in-bundle': 'geo/geosite/gfw.mrs',
+    url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/geolocation-!cn.mrs',
+    path: './ruleset/geolocation-!cn.mrs',
+    'path-in-bundle': 'geo/geosite/geolocation-!cn.mrs',
   },
   cn_additional: {
     ...ruleProviderCommonDomain,
@@ -483,15 +455,10 @@ function main(config) {
     'fake-ip-range': '198.18.0.1/16',
     'fake-ip-range-v6': 'fc00::/18',
     'fake-ip-filter': ['rule-set:private', 'rule-set:fakeip_filter'],
-
-    // 合并订阅中的 proxy-server-nameserver
     'proxy-server-nameserver': [...chinaDNS, ...originalProxyServerNameserver],
-
-    // 合并订阅中的 proxy-server-nameserver-policy
     'proxy-server-nameserver-policy': {
       ...originalProxyServerNameserverPolicy,
     },
-
     'default-nameserver': ['223.5.5.5', '119.29.29.29'],
     nameserver: [...foreignDNS],
     'nameserver-policy': {
@@ -581,14 +548,8 @@ function main(config) {
   config['rules'] = [
     ...finalRules,
 
-    // 代理规则
-    'RULE-SET,github,默认代理',
-    'RULE-SET,youtube,默认代理',
-    'RULE-SET,google,默认代理',
-    'RULE-SET,google_ip,默认代理,no-resolve',
-
     // 兜底规则
-    'RULE-SET,gfw,默认代理',
+    'RULE-SET,geolocation-!cn,默认代理',
     'RULE-SET,cn_additional,直连',
     'RULE-SET,cn_ip,直连',
     'MATCH,默认代理',
